@@ -16,7 +16,7 @@ public:
 
 private:
     double maxDist;
-    Vector3D color;
+    Vector3D color; // hitColor
 };
 
 #endif // DEPTHSHADER_H
