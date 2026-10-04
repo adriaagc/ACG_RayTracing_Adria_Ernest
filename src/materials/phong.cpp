@@ -1,6 +1,12 @@
+#define _USE_MATH_DEFINES //so we can use M_PI
+
 #include "phong.h"
 
 #include <iostream>
+
+#include "../core/utils.h" //for computeReflectionDirection
+
+
 
 Phong::Phong()
 { }
@@ -13,9 +19,10 @@ Vector3D Phong::getReflectance(const Vector3D& n, const Vector3D& wo,
     const Vector3D& wi) const {
 
     //FILL(...)
+    Vector3D wr = Utils::computeReflectionDirection(wi, n);
+    Vector3D f_r = (rho_d / M_PI) + Ks * pow(std::max(dot(wo, wr), 0.0), alpha);
 
-    return Vector3D(0.0);
-
+    return f_r;
 };
 
 double Phong::getIndexOfRefraction() const
