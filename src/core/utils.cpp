@@ -90,4 +90,3 @@ Vector3D Utils::computeReflectionDirection(const Vector3D &Direction, const Vect
     Vector3D wr = 2.0f*dot(normal, Direction) * normal - Direction;
     return wr;
 }
-

@@ -27,6 +27,8 @@ public:
 
     static Vector3D computeReflectionDirection(const Vector3D &Direction, const Vector3D &normal);
 
+    //visibility term functoin:
+
 
 
     static void printProgress(double percentage) {

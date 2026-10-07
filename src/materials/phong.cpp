@@ -20,7 +20,7 @@ Vector3D Phong::getReflectance(const Vector3D& n, const Vector3D& wo,
 
     //FILL(...)
     Vector3D wr = Utils::computeReflectionDirection(wi, n);
-    Vector3D f_r = (rho_d / M_PI) + Ks * pow(std::max(dot(wo, wr), 0.0), alpha);
+    Vector3D f_r = (rho_d / M_PI) + Ks * pow(dot(wo, wr), alpha); // std::max(dot(wo, wr), 0.0) ???
 
     return f_r;
 };
