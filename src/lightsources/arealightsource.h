@@ -14,6 +14,7 @@ public:
 
 
     Vector3D getIntensity() const;        
+    Vector3D generateRandomPoint() const;
     Vector3D sampleLightPosition() const ;
 
     double getArea() const {

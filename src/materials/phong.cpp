@@ -20,8 +20,8 @@ Vector3D Phong::getReflectance(const Vector3D& n, const Vector3D& wo,
 
     //FILL(...)
     Vector3D wr = Utils::computeReflectionDirection(wi, n);
-    Vector3D f_r = (rho_d / M_PI) + Ks * pow(dot(wo, wr), alpha); // std::max(dot(wo, wr), 0.0) ???
-
+    Vector3D f_r = (rho_d / M_PI) + Ks * (alpha + 2) / (2 * M_PI) * pow(std::max(dot(wo, wr), 0.0), alpha); // std::max(dot(wo, wr), 0.0) ???
+    //  This formulation respects the energy conservation law as long as kd+ks <= 1 (does it mean that we have to apply any if condition)
     return f_r;
 };
 

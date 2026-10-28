@@ -29,16 +29,18 @@ Vector3D WhittedIntegrator::computeColor(const Ray& r, const std::vector<Shape*>
         // 4.5.2 Direct Illumination
         else if (its.shape->getMaterial().hasDiffuseOrGlossy()) {
             //lo = Vector3D(0.0); // Whithout any constant light
-            lo = Vector3D(0.5) * its.shape->getMaterial().getDiffuseReflectance(); // With a constant light
+            lo = Vector3D(0.1) * its.shape->getMaterial().getDiffuseReflectance(); // With a constant light
+            Vector3D n = its.normal;
+            Vector3D x = its.itsPoint;                  // intersection point
             for (auto s : lsList) {
-                Vector3D n = its.normal;
-                Vector3D x = its.itsPoint;                  // intersection point
+                double d = (x - s->sampleLightPosition()).length(); // distance intersection point to light source
+                Vector3D li = s->getIntensity();
                 Vector3D wi = -(x - s->sampleLightPosition()).normalized(); // vector intersection point to light source
                 Vector3D fr = its.shape->getMaterial().getReflectance(n, -r.d.normalized(), wi.normalized());
                 Ray lightToObject = Ray(s->sampleLightPosition(), -wi);
-                lightToObject.maxT = (x - s->sampleLightPosition()).length() - 1.0E-4; // the ray must finish before reaching x.
+                lightToObject.maxT = d - 1.0E-4; // the ray must finish before reaching x.
                 int visibility = int(!Utils::hasIntersection(lightToObject, objList)); // if it has intersected then visibility is 0.
-                lo += s->getIntensity() * fr * dot(wi, n) * visibility;
+                lo += li * fr * dot(wi, n) * visibility; // / (d * d);    // divide by d^2 because light intensity fades as we move away from the point light source.
             }
         }
         // 4.5.4 Perfect Specular Refraction
@@ -53,7 +55,7 @@ Vector3D WhittedIntegrator::computeColor(const Ray& r, const std::vector<Shape*>
                 mu = 1.0 / mu_t; //now the n1 and n2 have switched order so mu=nglass/nair
             }
 
-            //compute the radicand: radicand=1-mu_t^2 (1-(nx ·wo)^2
+            //compute the radicand: radicand=1-mu_t^2 (1-(nx · wo)^2)
             double cos = dot(nx, wo);
             double radicand = 1.0 - mu * mu * (1.0 - cos * cos);
 
